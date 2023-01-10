@@ -7,6 +7,7 @@ import (
 	"testing"
 
 	"github.com/fatih/structs"
+	"github.com/stretchr/testify/require"
 )
 
 func TestFlag(t *testing.T) {
@@ -56,6 +57,24 @@ func TestNestedFlags(t *testing.T) {
 	if err := m.Load(s); err != nil {
 		t.Error(err)
 	}
+
+	testNestedStruct(t, s, getDefaultNestedServer())
+}
+
+func TestStructSeparatorFlags(t *testing.T) {
+	m := FlagLoader{StructSeparator: "."}
+	s := &NestedServer{}
+
+	m.Args = []string{
+		"--name", "koding",
+		"--database.postgres.enabled",
+		"--database.postgres.port", "5432",
+		"--database.postgres.hosts", "192.168.2.1,192.168.2.2,192.168.2.3",
+		"--database.postgres.dbname", "configdb",
+		"--database.postgres.availabilityratio", "8.23",
+	}
+
+	require.NoError(t, m.Load(s))
 
 	testNestedStruct(t, s, getDefaultNestedServer())
 }
