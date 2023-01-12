@@ -43,8 +43,8 @@ type (
 	}
 
 	NestedServer struct {
-		Name     string `required:"true"`
-		Database Database
+		Name            string `required:"true"`
+		DatabaseOptions Database
 	}
 )
 
@@ -101,7 +101,7 @@ func getDefaultCamelCaseServer() *CamelCaseServer {
 func getDefaultNestedServer() *NestedServer {
 	return &NestedServer{
 		Name: "koding",
-		Database: Database{
+		DatabaseOptions: Database{
 			Postgres: Postgres{
 				Enabled:           true,
 				Port:              5432,
@@ -269,8 +269,8 @@ func testNestedStruct(t *testing.T, s *NestedServer, d *NestedServer) {
 	t.Helper()
 
 	require.Equal(t, s.Name, d.Name)
-	require.NotNil(t, d.Database)
-	require.NotNil(t, s.Database)
+	require.NotNil(t, d.DatabaseOptions)
+	require.NotNil(t, s.DatabaseOptions)
 
-	testPostgres(t, s.Database.Postgres, d.Database.Postgres)
+	testPostgres(t, s.DatabaseOptions.Postgres, d.DatabaseOptions.Postgres)
 }

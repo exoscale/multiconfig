@@ -67,11 +67,11 @@ func TestStructSeparatorFlags(t *testing.T) {
 
 	m.Args = []string{
 		"--name", "koding",
-		"--database.postgres.enabled",
-		"--database.postgres.port", "5432",
-		"--database.postgres.hosts", "192.168.2.1,192.168.2.2,192.168.2.3",
-		"--database.postgres.dbname", "configdb",
-		"--database.postgres.availabilityratio", "8.23",
+		"--databaseoptions.postgres.enabled",
+		"--databaseoptions.postgres.port", "5432",
+		"--databaseoptions.postgres.hosts", "192.168.2.1,192.168.2.2,192.168.2.3",
+		"--databaseoptions.postgres.dbname", "configdb",
+		"--databaseoptions.postgres.availabilityratio", "8.23",
 	}
 
 	require.NoError(t, m.Load(s))
@@ -126,11 +126,11 @@ func TestCamelCaseAndStructSeparator(t *testing.T) {
 
 	m.Args = []string{
 		"--name", "koding",
-		"--database.postgres.enabled",
-		"--database.postgres.port", "5432",
-		"--database.postgres.hosts", "192.168.2.1,192.168.2.2,192.168.2.3",
-		"--database.postgres.db-name", "configdb",
-		"--database.postgres.availability-ratio", "8.23",
+		"--database-options.postgres.enabled",
+		"--database-options.postgres.port", "5432",
+		"--database-options.postgres.hosts", "192.168.2.1,192.168.2.2,192.168.2.3",
+		"--database-options.postgres.db-name", "configdb",
+		"--database-options.postgres.availability-ratio", "8.23",
 	}
 
 	require.NoError(t, m.Load(s))
@@ -291,12 +291,12 @@ func getFlags(t *testing.T, structName, prefix string) []string {
 		}
 	case "NestedServer":
 		flags = map[string]string{
-			"--name":                                "koding",
-			"--database-postgres-enabled":           "",
-			"--database-postgres-port":              "5432",
-			"--database-postgres-hosts":             "192.168.2.1,192.168.2.2,192.168.2.3",
-			"--database-postgres-dbname":            "configdb",
-			"--database-postgres-availabilityratio": "8.23",
+			"--name":                                       "koding",
+			"--databaseoptions-postgres-enabled":           "",
+			"--databaseoptions-postgres-port":              "5432",
+			"--databaseoptions-postgres-hosts":             "192.168.2.1,192.168.2.2,192.168.2.3",
+			"--databaseoptions-postgres-dbname":            "configdb",
+			"--databaseoptions-postgres-availabilityratio": "8.23",
 		}
 	}
 
