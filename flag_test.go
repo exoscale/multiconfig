@@ -98,7 +98,7 @@ func TestFlattenFlags(t *testing.T) {
 	testFlattenedStruct(t, s, getDefaultServer())
 }
 
-func TestCamelcaseFlags(t *testing.T) {
+func TestCamelCaseFlags(t *testing.T) {
 	m := FlagLoader{
 		CamelCase: true,
 	}
@@ -115,6 +115,27 @@ func TestCamelcaseFlags(t *testing.T) {
 	}
 
 	testCamelcaseStruct(t, s, getDefaultCamelCaseServer())
+}
+
+func TestCamelCaseAndStructSeparator(t *testing.T) {
+	m := FlagLoader{
+		CamelCase:       true,
+		StructSeparator: ".",
+	}
+	s := &NestedServer{}
+
+	m.Args = []string{
+		"--name", "koding",
+		"--database.postgres.enabled",
+		"--database.postgres.port", "5432",
+		"--database.postgres.hosts", "192.168.2.1,192.168.2.2,192.168.2.3",
+		"--database.postgres.db-name", "configdb",
+		"--database.postgres.availability-ratio", "8.23",
+	}
+
+	require.NoError(t, m.Load(s))
+
+	testNestedStruct(t, s, getDefaultNestedServer())
 }
 
 func TestFlattenAndCamelCaseFlags(t *testing.T) {
