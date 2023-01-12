@@ -8,7 +8,7 @@ users:
    - ankara
    - istanbul
 
-interval: 10000000000
+interval: 10s
 
 id: 1234567890
 
