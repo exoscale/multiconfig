@@ -130,6 +130,7 @@ func TestLoad(t *testing.T) {
 
 func TestDefaultLoader(t *testing.T) {
 	m := New()
+	setEnvVars(t, "Server", "")
 
 	s := new(Server)
 	if err := m.Load(s); err != nil {

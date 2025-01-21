@@ -219,6 +219,7 @@ func TestFlagValueSupport(t *testing.T) {
 		t.Fatalf("got %q, want %q", e.Public, m.Args[3])
 	}
 }
+
 func TestCustomUsageTag(t *testing.T) {
 	const usageMsg = "foobar help"
 	strt := struct {
@@ -237,6 +238,24 @@ func TestCustomUsageTag(t *testing.T) {
 	if f.Usage != usageMsg {
 		t.Fatalf("usage message was %q, expected %q", f.Usage, usageMsg)
 	}
+}
+
+func TestMapFlagSupport(t *testing.T) {
+	m := &FlagLoader{CamelCase: true}
+
+	m.Args = []string{
+		"-map-string-int", "key1=1234,key2=456",
+		"-map-string-string", "key1=val1,key2=val2",
+	}
+
+	var e struct {
+		MapStringInt    map[string]int
+		MapStringString map[string]string
+	}
+
+	require.NoError(t, m.Load(&e))
+	require.EqualValues(t, map[string]int{"key1": 1234, "key2": 456}, e.MapStringInt)
+	require.EqualValues(t, map[string]string{"key1": "val1", "key2": "val2"}, e.MapStringString)
 }
 
 // getFlags returns a slice of arguments that can be passed to flag.Parse()
