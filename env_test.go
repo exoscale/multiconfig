@@ -1,11 +1,11 @@
 package multiconfig
 
 import (
-	"os"
 	"strings"
 	"testing"
 
 	"github.com/fatih/structs"
+	"github.com/stretchr/testify/require"
 )
 
 func TestENV(t *testing.T) {
@@ -128,9 +128,7 @@ func setEnvVars(t *testing.T, structName, prefix string) {
 
 	for key, val := range env {
 		env := prefix + "_" + key
-		if err := os.Setenv(env, val); err != nil {
-			t.Fatal(err)
-		}
+		t.Setenv(env, val)
 	}
 }
 
@@ -151,4 +149,25 @@ func TestENVgetPrefix(t *testing.T) {
 	if p := e.getPrefix(st); p != prefix {
 		t.Errorf("Prefix is wrong: %s, want: %s", p, prefix)
 	}
+}
+
+func TestMapEnvSupport(t *testing.T) {
+	m := &EnvironmentLoader{CamelCase: true}
+
+	env := map[string]string{
+		"_MAP_STRING_INT":    "key1=1234,key2=456",
+		"_MAP_STRING_STRING": "key1=val1,key2=val2",
+	}
+	for key, val := range env {
+		t.Setenv(key, val)
+	}
+
+	var e struct {
+		MapStringInt    map[string]int
+		MapStringString map[string]string
+	}
+
+	require.NoError(t, m.Load(&e))
+	require.EqualValues(t, map[string]int{"key1": 1234, "key2": 456}, e.MapStringInt)
+	require.EqualValues(t, map[string]string{"key1": "val1", "key2": "val2"}, e.MapStringString)
 }
