@@ -16,4 +16,8 @@ func TestDefaultValues(t *testing.T) {
 	if s.Postgres.DBName != getDefaultServer().Postgres.DBName {
 		t.Errorf("Postgres DBName value is wrong: %s, want: %s", s.Postgres.DBName, getDefaultServer().Postgres.DBName)
 	}
+
+	if s.RootPassword != getDefaultServer().RootPassword {
+		t.Errorf("RootPassword value is wrong: %s, want: %s", s.RootPassword, getDefaultServer().RootPassword)
+	}
 }

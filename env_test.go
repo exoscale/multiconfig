@@ -100,6 +100,7 @@ func setEnvVars(t *testing.T, structName, prefix string) {
 			"EPOCH":                      "1638551008",
 			"EPOCH32":                    "1638551009",
 			"EPOCH64":                    "1638551010",
+			"ROOTPASSWORD":               "mystery",
 		}
 	case "CamelCaseServer":
 		env = map[string]string{

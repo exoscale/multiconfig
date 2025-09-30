@@ -284,6 +284,7 @@ func getFlags(t *testing.T, structName, prefix string) []string {
 			"-epoch":                      "1638551008",
 			"-epoch32":                    "1638551009",
 			"-epoch64":                    "1638551010",
+			"-rootpassword":               "mystery",
 		}
 	case "FlattenedServer":
 		flags = map[string]string{
