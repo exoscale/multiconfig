@@ -9,18 +9,19 @@ import (
 
 type (
 	Server struct {
-		Name       string `required:"true"`
-		Port       int    `default:"6060"`
-		ID         int64
-		Labels     []int
-		Enabled    bool
-		Users      []string
-		Postgres   Postgres
-		unexported string
-		Interval   time.Duration
-		Epoch      uint   `default:"1638551008"`
-		Epoch32    uint32 `default:"1638551009"`
-		Epoch64    uint64 `default:"1638551010"`
+		Name         string `required:"true"`
+		Port         int    `default:"6060"`
+		ID           int64
+		Labels       []int
+		Enabled      bool
+		Users        []string
+		Postgres     Postgres
+		unexported   string
+		Interval     time.Duration
+		Epoch        uint   `default:"1638551008"`
+		Epoch32      uint32 `default:"1638551009"`
+		Epoch64      uint64 `default:"1638551010"`
+		RootPassword Secret `default:"mystery"`
 	}
 
 	// Postgres holds Postgresql database related configuration
@@ -46,6 +47,8 @@ type (
 		Name            string `required:"true"`
 		DatabaseOptions Database
 	}
+
+	Secret string
 )
 
 type FlattenedServer struct {
@@ -82,10 +85,11 @@ func getDefaultServer() *Server {
 			AvailabilityRatio: 8.23,
 			unexported:        "unexported",
 		},
-		Epoch:      1638551008,
-		Epoch32:    1638551009,
-		Epoch64:    1638551010,
-		unexported: "unexported",
+		Epoch:        1638551008,
+		Epoch32:      1638551009,
+		Epoch64:      1638551010,
+		RootPassword: Secret("mystery"),
+		unexported:   "unexported",
 	}
 }
 
@@ -203,6 +207,10 @@ func testStruct(t *testing.T, s *Server, d *Server) {
 
 	if s.Epoch64 != d.Epoch64 {
 		t.Errorf("Epoch64 value is wrong: %v, want: %v", s.Epoch64, d.Epoch64)
+	}
+
+	if s.RootPassword != d.RootPassword {
+		t.Errorf("RootPassword is wrong: %v, want %v", s.RootPassword, d.RootPassword)
 	}
 }
 
